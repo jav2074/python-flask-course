@@ -159,4 +159,7 @@ pip install flask_sqlalchemy
 python ../../src/index.py
 
 
+activate.bat
+deactivate.bat
+
 set SECRET_KEY="1234567890"
