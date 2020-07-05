@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 import os
 
-dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/database.db"
+dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/DBs/database.db"
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
@@ -15,6 +15,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(80))
 
 def seccion():
     try:
@@ -29,7 +30,7 @@ def index():
     users = Users.query.all()
     user_list="<ul>"
     for user in users:
-        user_list += "<li>"+str(user.id)+" - "+(user.username)+"</li>"
+        user_list += "<li>"+str(user.id)+" - "+(user.username)+" - "+(user.email)+"</li>"
     user_list+="</ul>"
 
     return render_template("index.html", dbdir=dbdir, user_list=user_list, session=seccion())
@@ -39,14 +40,16 @@ def search():
     nickname = request.args.get("nickname")
     user = Users.query.filter_by(username=nickname).first()
     if user:
-        return render_template("msg.html", msg=user.username, session=seccion())
+        return render_template("msg.html", msg=str(user.id)+" - "+(user.username)+" - "+(user.email), session=seccion())
     return render_template("msg.html", msg="The user doesn't exist.", session=seccion())
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         hashed_pw = generate_password_hash(request.form["password"], method="sha256")
-        new_user = Users(username=request.form["username"], password=hashed_pw)
+        new_user = Users(   username=request.form["username"], 
+                            password=hashed_pw, 
+                            email=request.form["email"]   )
         db.session.add(new_user)
         db.session.commit()
 

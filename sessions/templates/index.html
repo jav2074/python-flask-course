@@ -5,7 +5,7 @@ Home
 {% block content %}
 <h1>Welcome!</h1>
 <form method="get" action="{{ url_for('search') }}">
-	<p><input type="text" name="nickname"></p>
+	<p><input type="text" name="nickname" placeholder="username"></p>
 	<input type="submit" value="Search">
 </form>
 {% endblock %}

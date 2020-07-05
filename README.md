@@ -147,8 +147,10 @@ https://virtualenv.pypa.io/en/latest/installation.html
 pip install virtualenv
 <!-- Ejecucion -->
 python -m venv venv
-<!-- Ejecucion -->
+<!-- Ejecucion de Entorno Virtual -->
 cd venv/Scripts
+activate.bat
+deactivate.bat
 python --version
 pip --version
 <!-- Instalacion de FLASK en mi Entorno Virtual -->
@@ -159,7 +161,5 @@ pip install flask_sqlalchemy
 python ../../src/index.py
 
 
-activate.bat
-deactivate.bat
 
 set SECRET_KEY="1234567890"
