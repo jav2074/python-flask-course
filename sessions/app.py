@@ -3,10 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import os
-
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/DBs/database.db"
 
-app = Flask(__name__)
+app = Flask(__name__) 
 app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -60,6 +59,7 @@ def signup():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    # POST
     if request.method == "POST":
         user = Users.query.filter_by(username=request.form["username"]).first()
 
@@ -70,6 +70,7 @@ def login():
         # return "Your credentials are invalid, check and try again."
         return render_template("msg.html", msg="Your credentials are invalid, check and try again.", session=seccion())
 
+    # GET
     return render_template("login.html", session=seccion())
 
 @app.route("/home")
