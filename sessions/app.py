@@ -18,20 +18,20 @@ class Users(db.Model):
 
 def seccion():
     try:
-        sess=escape(session["username"]).upper()
+        # sess=escape(session["username"]).upper()
+        sess = {}
+        sess["username"] = session["username"]
+        sess["email"] = session["email"]
     except Exception as e:
         print("TypeError: {} - Error: {}".format(type(e),e))
-        sess="NONE"
+        # sess["username"] = "NONE"
+        sess = "NONE"
     return sess
 
 @app.route("/")
 def index():
     users = Users.query.all()
-    user_list="<ul>"
-    for user in users:
-        user_list += "<li>"+str(user.id)+" - "+(user.username)+" - "+(user.email)+"</li>"
-    user_list+="</ul>"
-
+    user_list = users
     return render_template("index.html", dbdir=dbdir, user_list=user_list, session=seccion())
 
 @app.route("/search")
@@ -65,6 +65,7 @@ def login():
 
         if user and check_password_hash(user.password, request.form["password"]):
             session["username"] = user.username
+            session["email"] = user.email
             # return "You are logged in"
             return render_template("msg.html", msg="You are logged in", session=seccion())
         # return "Your credentials are invalid, check and try again."
@@ -85,6 +86,7 @@ def home():
 @app.route("/logout")
 def logout():
     session.pop("username", None)
+    session.pop("email", None)
     # return "You are logged out."
     return render_template("msg.html", msg="You are logged out.", session=seccion())
 

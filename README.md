@@ -163,3 +163,11 @@ python ../../src/index.py
 
 
 set SECRET_KEY="1234567890"
+
+
+    <!-- {% if {{session}} is "NONE" %} -->
+    <!-- {% if 'username' in session %} -->
+    <a href="/login">login</a>
+    <!-- {% else %} -->
+      <a href="/logout">logout</a>
+    <!-- {% endif %} -->

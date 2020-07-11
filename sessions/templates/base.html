@@ -9,11 +9,17 @@
     <a href="/home">home</a>
     <a href="/">search</a>
     <a href="/signup">signup</a>
-    <a href="/login">login</a>
-    <a href="/logout">logout</a>
 
-    <a href="/">{{session}}</a>
-    <!-- escape(session["username"]) -->
+    {% if 'username' in session %}
+      <a href="/logout">logout</a>
+      <a href="/">{{ session.username }} -/- {{ session.email }}</a>
+    {% else %}
+      <a href="/login">login</a>
+      <a href="/">{{ session }}</a>
+    {% endif %}
+
+    
+
     {% block content %}
     {% endblock %}
 
@@ -21,9 +27,24 @@
     <br>
     {{dbdir}}
     <br>
-    <p>
-      {{ user_list | safe }}
-    </p>
+    
+    <!-- <p>
+      {% if 'username' in session %}
+        {{ session.username }} - {{ session.email }}
+      {% else %}
+        {{ session }}
+      {% endif %}
+    </p> -->
+
+    <ul>
+      {% for item in user_list %}
+        <li>{{ item.id }} - {{ item.username }} - {{ item.email }}</li>
+      {% endfor %}
+    </ul>
+    
 
   </body>
 </html>
+
+
+
